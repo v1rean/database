@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/purchases")
@@ -27,6 +28,11 @@ public class PurchaseController {
     @PostMapping
     public boolean addPurchase(@RequestBody PurchaseHistory purchase) {
         return purchaseService.addPurchase(purchase);
+    }
+
+    @PostMapping("/checkout")
+    public Map<String, Object> checkout(@RequestBody PurchaseHistory purchase) {
+        return purchaseService.checkout(purchase);
     }
 
     @DeleteMapping("/{id}")

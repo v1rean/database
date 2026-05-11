@@ -1,12 +1,23 @@
 package com.convstore.model;
 
+import jakarta.persistence.*;
 import java.util.List;
 
+@Entity
+@Table(name = "purchases")
 public class PurchaseHistory {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @Column(name = "user_id")
     private int userId;
+
     private String username;
+
+    @Transient
     private List<PurchaseItem> items;
+
     private double total;
     private String date;
 

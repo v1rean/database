@@ -1,6 +1,12 @@
 package com.convstore.model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "products")
 public class Product {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
     private String category;

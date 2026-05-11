@@ -1,65 +1,48 @@
 package com.convstore.service;
 
 import com.convstore.model.Product;
+import com.convstore.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.Optional;
 
 @Service
 public class ProductService {
     @Autowired
-    private DataService dataService;
+    private ProductRepository productRepository;
+
+    public boolean reduceStock(int productId, int quantity) {
+        Product product = productRepository.findById(productId).orElse(null);
+        if (product == null || product.getStock() < quantity) return false;
+        product.setStock(product.getStock() - quantity);
+        productRepository.save(product);
+        return true;
+    }
 
     public List<Product> getAllProducts() {
-        return dataService.readData("products.json", new com.fasterxml.jackson.core.type.TypeReference<List<Product>>() {});
+        return productRepository.findAll();
     }
 
     public Product getProductById(int id) {
-        return getAllProducts().stream()
-                .filter(p -> p.getId() == id)
-                .findFirst()
-                .orElse(null);
-    }
-
-    public void saveProducts(List<Product> products) {
-        dataService.writeData("products.json", products);
+        return productRepository.findById(id).orElse(null);
     }
 
     public boolean addProduct(Product product) {
-        List<Product> products = getAllProducts();
-        product.setId(generateId(products));
-        products.add(product);
-        saveProducts(products);
+        productRepository.save(product);
         return true;
     }
 
     public boolean updateProduct(Product updatedProduct) {
-        List<Product> products = getAllProducts();
-        for (int i = 0; i < products.size(); i++) {
-            if (products.get(i).getId() == updatedProduct.getId()) {
-                products.set(i, updatedProduct);
-                saveProducts(products);
-                return true;
-            }
-        }
-        return false;
+        if (!productRepository.existsById(updatedProduct.getId())) return false;
+        productRepository.save(updatedProduct);
+        return true;
     }
 
     public boolean deleteProduct(int id) {
-        List<Product> products = getAllProducts();
-        boolean removed = products.removeIf(p -> p.getId() == id);
-        if (removed) {
-            saveProducts(products);
-        }
-        return removed;
-    }
-
-    private int generateId(List<Product> products) {
-        return products.stream()
-                .mapToInt(Product::getId)
-                .max()
-                .orElse(0) + 1;
+        if (!productRepository.existsById(id)) return false;
+        productRepository.deleteById(id);
+        return true;
     }
 }

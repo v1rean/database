@@ -1,11 +1,21 @@
 package com.convstore.model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "accounts")
 public class Account {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(unique = true)
     private String username;
     private String password;
     private String role;
     private String name;
+
+    @Column(name = "recommend_enabled", columnDefinition = "boolean default true")
+    private boolean recommendEnabled = true;
 
     public Account() {}
 
@@ -19,4 +29,6 @@ public class Account {
     public void setRole(String role) { this.role = role; }
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
+    public boolean isRecommendEnabled() { return recommendEnabled; }
+    public void setRecommendEnabled(boolean recommendEnabled) { this.recommendEnabled = recommendEnabled; }
 }

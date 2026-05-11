@@ -1,6 +1,18 @@
 package com.convstore.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "purchase_items")
 public class PurchaseItem {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @JsonIgnore
+    private int purchaseId;
+
     private int productId;
     private String name;
     private double price;
@@ -8,6 +20,10 @@ public class PurchaseItem {
 
     public PurchaseItem() {}
 
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+    public int getPurchaseId() { return purchaseId; }
+    public void setPurchaseId(int purchaseId) { this.purchaseId = purchaseId; }
     public int getProductId() { return productId; }
     public void setProductId(int productId) { this.productId = productId; }
     public String getName() { return name; }
