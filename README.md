@@ -3,7 +3,6 @@
 ## 项目结构
 - `frontend/` - Vue 3 + Vite 前端
 - `backend/` - Spring Boot 后端
-- `data/` - JSON数据文件
 
 ## 启动说明
 
