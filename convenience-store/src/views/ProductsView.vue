@@ -76,6 +76,7 @@
         <h2 class="page-title">商品浏览</h2>
       </div>
 
+      <AnnouncementModal />
       <CarouselBanner />
       <AnnouncementBar />
       <div class="search-bar">
@@ -149,6 +150,7 @@ import { toast } from '../utils/toast';
 import { selectedCategory } from '../utils/categoryState';
 import CarouselBanner from '../components/CarouselBanner.vue';
 import AnnouncementBar from '../components/AnnouncementBar.vue';
+import AnnouncementModal from '../components/AnnouncementModal.vue';
 
 const router = useRouter();
 const props = defineProps({ isAdmin: Boolean });
