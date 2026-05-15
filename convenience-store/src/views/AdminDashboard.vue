@@ -14,6 +14,7 @@
             <router-link to="/admin/inventory" class="nav-link" active-class="active">出入库</router-link>
             <router-link to="/admin/purchases" class="nav-link" active-class="active">订单</router-link>
             <router-link to="/admin/carousels" class="nav-link" active-class="active">轮播</router-link>
+            <router-link to="/admin/sales" class="nav-link" active-class="active">报表</router-link>
             <router-link to="/admin/announcements" class="nav-link" active-class="active">公告</router-link>
           </nav>
         </div>

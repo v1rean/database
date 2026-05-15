@@ -76,13 +76,13 @@ INSERT IGNORE INTO products (id, name, category, price, stock, description) VALU
 (70, '空气清新剂', '日用品', 7.0, 50, '320ml 淡雅花香');
 
 -- Seed purchases (ignore if already exist)
-INSERT IGNORE INTO purchases (id, user_id, username, total, date) VALUES
-(1, 2, '张三', 11.5, '2026-05-01 10:30:00'),
-(2, 2, '张三', 18.0, '2026-05-03 14:20:00'),
-(3, 3, '李四', 20.0, '2026-05-02 09:15:00'),
-(4, 2, '张三', 22.0, '2026-05-05 16:45:00'),
-(5, 3, '李四', 14.5, '2026-05-06 11:20:00'),
-(6, 2, '张三', 30.0, '2026-05-08 19:30:00');
+INSERT IGNORE INTO purchases (id, user_id, username, total, date, payment_method) VALUES
+(1, 2, '张三', 11.5, '2026-05-01 10:30:00', '微信'),
+(2, 2, '张三', 18.0, '2026-05-03 14:20:00', '支付宝'),
+(3, 3, '李四', 20.0, '2026-05-02 09:15:00', '现金'),
+(4, 2, '张三', 22.0, '2026-05-05 16:45:00', '微信'),
+(5, 3, '李四', 14.5, '2026-05-06 11:20:00', '支付宝'),
+(6, 2, '张三', 30.0, '2026-05-08 19:30:00', '微信');
 
 -- Seed purchase items (ignore if already exist)
 INSERT IGNORE INTO purchase_items (id, purchase_id, product_id, name, price, quantity) VALUES

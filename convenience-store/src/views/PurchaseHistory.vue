@@ -20,6 +20,7 @@
               <th>用户</th>
               <th>商品</th>
               <th>总价</th>
+              <th>支付方式</th>
               <th>日期</th>
               <th>操作</th>
             </tr>
@@ -34,6 +35,7 @@
                 </div>
               </td>
               <td class="total-price">¥{{ purchase.total }}</td>
+              <td><span class="pay-badge">{{ purchase.paymentMethod || '-' }}</span></td>
               <td class="date-cell">{{ purchase.date }}</td>
               <td>
                 <button class="btn btn-sm btn-danger" @click="deletePurchase(purchase.id)">删除</button>
@@ -60,6 +62,7 @@
             <div class="order-meta">
               <span class="order-id">订单 #{{ purchase.id }}</span>
               <span class="order-status">已完成</span>
+              <span v-if="purchase.paymentMethod" class="order-pay">💳 {{ purchase.paymentMethod }}</span>
             </div>
             <span class="order-date">{{ purchase.date }}</span>
           </div>
@@ -409,5 +412,14 @@ onMounted(loadPurchases);
 
 .go-shop-btn:hover {
   opacity: 0.9;
+}
+
+.pay-badge {
+  display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: 500;
+  background: #f0f0f0; color: #666;
+}
+.order-pay {
+  font-size: 11px; padding: 2px 8px; background: #f0f5ff; color: #2f54eb;
+  border-radius: 4px; margin-left: 6px;
 }
 </style>

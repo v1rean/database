@@ -42,6 +42,30 @@
         </div>
       </div>
 
+      <div class="card payment-card">
+        <h3 class="section-title">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#ff5000" stroke-width="2">
+            <rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/>
+          </svg>
+          支付方式
+        </h3>
+        <div class="payment-options">
+          <label
+            v-for="pm in paymentMethods"
+            :key="pm.value"
+            :class="['payment-option', { active: paymentMethod === pm.value }]"
+          >
+            <input type="radio" v-model="paymentMethod" :value="pm.value" class="payment-radio" />
+            <span class="payment-icon">{{ pm.icon }}</span>
+            <span class="payment-label">{{ pm.label }}</span>
+            <span class="payment-check" v-if="paymentMethod === pm.value">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="#ff5000" stroke="none"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+            </span>
+          </label>
+        </div>
+        <p v-if="paymentError" class="payment-error">{{ paymentError }}</p>
+      </div>
+
       <div class="action-bar">
         <button class="btn btn-outline" @click="goBack">返回购物车</button>
         <button class="btn btn-primary" :class="{ loading: submitting }" @click="submitCheckout" :disabled="cartStore.items.length === 0">
@@ -64,6 +88,10 @@
         </div>
         <h3 class="result-title">{{ result.success ? '结算成功!' : '结算失败' }}</h3>
         <p class="result-msg">{{ result.message }}</p>
+        <div v-if="result.success && paymentMethod" class="result-payment">
+          <span class="result-pay-icon">{{ paymentMethodIcon }}</span>
+          <span class="result-pay-label">支付方式：{{ paymentMethodLabel }}</span>
+        </div>
         <div class="result-actions">
           <button class="btn btn-primary" @click="goBack">{{ result.success ? '返回商品页' : '返回重新结算' }}</button>
         </div>
@@ -73,7 +101,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { cartStore } from '../utils/cartStore';
 import { cartUI } from '../utils/cartUI';
@@ -83,6 +111,24 @@ const router = useRouter();
 const submitted = ref(false);
 const submitting = ref(false);
 const result = ref({ success: false, message: '' });
+const paymentMethod = ref('');
+const paymentError = ref('');
+
+const paymentMethods = [
+  { value: '现金', label: '现金支付', icon: '💵' },
+  { value: '微信', label: '微信支付', icon: '💚' },
+  { value: '支付宝', label: '支付宝', icon: '💙' }
+];
+
+const paymentMethodIcon = computed(() => {
+  const pm = paymentMethods.find(p => p.value === paymentMethod.value);
+  return pm ? pm.icon : '';
+});
+
+const paymentMethodLabel = computed(() => {
+  const pm = paymentMethods.find(p => p.value === paymentMethod.value);
+  return pm ? pm.label : '';
+});
 
 const goBack = () => {
   router.push('/user/products');
@@ -90,6 +136,11 @@ const goBack = () => {
 
 const submitCheckout = async () => {
   if (cartStore.items.length === 0) return;
+  if (!paymentMethod.value) {
+    paymentError.value = '请选择支付方式';
+    return;
+  }
+  paymentError.value = '';
   const user = await dataManager.getCurrentUser();
   if (!user) {
     router.push('/');
@@ -106,7 +157,8 @@ const submitCheckout = async () => {
       quantity: i.quantity
     })),
     total: cartStore.total,
-    date: new Date().toLocaleString('zh-CN', { hour12: false })
+    date: new Date().toLocaleString('zh-CN', { hour12: false }),
+    paymentMethod: paymentMethod.value
   };
   try {
     const res = await dataManager.checkout(purchase);
@@ -383,4 +435,24 @@ const itemEmoji = (name) => {
   max-width: 200px;
   margin: 0 auto;
 }
+
+/* ===== 支付方式 ===== */
+.payment-card { border: 1px solid #ffe0cc; }
+.payment-options { display: flex; gap: 12px; }
+.payment-option {
+  flex: 1; display: flex; align-items: center; gap: 10px;
+  padding: 14px 16px; border: 2px solid #e0e0e0; border-radius: 12px;
+  cursor: pointer; transition: all 0.2s; position: relative;
+}
+.payment-option:hover { border-color: #ffd0b3; background: #fffaf5; }
+.payment-option.active { border-color: #ff5000; background: #fff5ef; }
+.payment-radio { position: absolute; opacity: 0; width: 0; height: 0; }
+.payment-icon { font-size: 24px; }
+.payment-label { font-size: 14px; font-weight: 600; color: #333; }
+.payment-check { margin-left: auto; }
+.payment-error { color: #ff4d4f; font-size: 13px; margin-top: 12px; text-align: center; }
+
+.result-payment { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 24px; }
+.result-pay-icon { font-size: 28px; }
+.result-pay-label { font-size: 15px; color: #333; font-weight: 600; }
 </style>

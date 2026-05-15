@@ -30,9 +30,10 @@ const routes = [
       { path: 'products', component: ProductsView, props: { isAdmin: true } },
       { path: 'categories', component: () => import('../views/AdminCategories.vue') },
       { path: 'inventory', component: () => import('../views/AdminInventory.vue') },
-      { path: 'purchases', component: PurchaseHistory, props: { isAdmin: true } },
+      { path: 'purchases', component: () => import('../views/AdminPurchases.vue') },
       { path: 'carousels', component: () => import('../views/AdminCarousels.vue') },
       { path: 'announcements', component: () => import('../views/AdminAnnouncements.vue') },
+      { path: 'sales', component: () => import('../views/AdminSalesReport.vue') },
       { path: '', redirect: '/admin/users' }
     ]
   }

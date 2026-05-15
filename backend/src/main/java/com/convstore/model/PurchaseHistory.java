@@ -21,6 +21,9 @@ public class PurchaseHistory {
     private double total;
     private String date;
 
+    @Column(name = "payment_method")
+    private String paymentMethod;
+
     public PurchaseHistory() {}
 
     public int getId() { return id; }
@@ -35,4 +38,6 @@ public class PurchaseHistory {
     public void setTotal(double total) { this.total = total; }
     public String getDate() { return date; }
     public void setDate(String date) { this.date = date; }
+    public String getPaymentMethod() { return paymentMethod; }
+    public void setPaymentMethod(String paymentMethod) { this.paymentMethod = paymentMethod; }
 }

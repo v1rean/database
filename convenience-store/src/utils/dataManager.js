@@ -262,5 +262,33 @@ export const dataManager = {
   async deleteAnnouncement(id) {
     const res = await fetch(`${API_BASE}/announcements/${id}`, { method: 'DELETE' });
     return res.ok;
+  },
+
+  // ---- Admin: Purchase Search ----
+  async searchPurchases(start, end, username) {
+    const params = new URLSearchParams();
+    if (start) params.append('start', start);
+    if (end) params.append('end', end);
+    if (username) params.append('username', username);
+    const res = await fetch(`${API_BASE}/purchases/search?${params}`);
+    return res.json();
+  },
+
+  // ---- Admin: Refund ----
+  async refundPurchase(id, operator) {
+    const res = await fetch(`${API_BASE}/purchases/${id}/refund`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ operator })
+    });
+    return res.json();
+  },
+
+  // ---- Admin: Sales Report ----
+  async getSalesReport(start, end) {
+    const params = new URLSearchParams();
+    if (start) params.append('start', start);
+    if (end) params.append('end', end);
+    const res = await fetch(`${API_BASE}/purchases/sales-report?${params}`);
+    return res.json();
   }
 };

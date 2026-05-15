@@ -13,6 +13,13 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
 
+    public void addStock(int productId, int quantity) {
+        Product product = productRepository.findById(productId).orElse(null);
+        if (product == null) return;
+        product.setStock(product.getStock() + quantity);
+        productRepository.save(product);
+    }
+
     public boolean reduceStock(int productId, int quantity) {
         Product product = productRepository.findById(productId).orElse(null);
         if (product == null || product.getStock() < quantity) return false;

@@ -46,6 +46,7 @@ CREATE TABLE purchases (
   username VARCHAR(255) DEFAULT NULL,
   total DOUBLE DEFAULT NULL,
   date VARCHAR(100) DEFAULT NULL,
+  payment_method VARCHAR(50) DEFAULT NULL,
   PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -195,13 +196,13 @@ INSERT INTO categories (id, name, description) VALUES
 (4, '日用品', '日常用品');
 
 -- 2.4 订单数据
-INSERT INTO purchases (id, user_id, username, total, date) VALUES
-(1, 2, '张三', 11.5, '2026-05-01 10:30:00'),
-(2, 2, '张三', 22.0, '2026-05-03 14:20:00'),
-(3, 3, '李四', 20.0, '2026-05-02 09:15:00'),
-(4, 2, '张三', 22.0, '2026-05-05 16:45:00'),
-(5, 3, '李四', 19.0, '2026-05-06 11:20:00'),
-(6, 2, '张三', 29.0, '2026-05-08 19:30:00');
+INSERT INTO purchases (id, user_id, username, total, date, payment_method) VALUES
+(1, 2, '张三', 11.5, '2026-05-01 10:30:00', '微信'),
+(2, 2, '张三', 22.0, '2026-05-03 14:20:00', '支付宝'),
+(3, 3, '李四', 20.0, '2026-05-02 09:15:00', '现金'),
+(4, 2, '张三', 22.0, '2026-05-05 16:45:00', '微信'),
+(5, 3, '李四', 19.0, '2026-05-06 11:20:00', '支付宝'),
+(6, 2, '张三', 29.0, '2026-05-08 19:30:00', '微信');
 
 -- 2.5 订单明细数据
 INSERT INTO purchase_items (id, purchase_id, product_id, name, price, quantity) VALUES
